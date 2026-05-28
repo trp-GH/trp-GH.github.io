@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free AI Search Assistant</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            background: #ff416c;
+            background: linear-gradient(to right, #ff4b2b, #ff416c);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+        }
+
+        .result-box {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 8px;
+            min-height: 150px;
+            max-height: 350px;
+            overflow-y: auto;
+            border-left: 4px solid #ff416c;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            font-style: italic;
+            color: #ffeb3b;
+        }
+
+        .source-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 15px;
+            background: #4caf50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🤖 Free AI Search Assistant</h1>
+    
+    <div class="search-box">
+        <input type="text" id="userInput" placeholder="Kuch bhi sawaal pucho (e.g., Albert Einstein)...">
+        <button onclick="askAI()">Pucho</button>
+    </div>
+
+    <div class="loader" id="loader">AI soch raha hai aur search kar raha hai...</div>
+    
+    <div class="result-box" id="result">
+        Aapka jawab yahan dikhega. Yeh tool Wikipedia se free data nikalta hai. Agar Wikipedia par nahi mila, toh aapko Google Search ki direct link de dega!
+    </div>
+</div>
+
+<script>
+    async function askAI() {
+        const query = document.getElementById('userInput').value.trim();
+        const resultBox = document.getElementById('result');
+        const loader = document.getElementById('loader');
+
+        if (!query) {
+            alert('Pehle kuch likho toh sahi!');
+            return;
+        }
+
+        // Show loader, clear previous result
+        loader.style.display = 'block';
+        resultBox.innerHTML = '';
+
+        try {
+            // 1. Wikipedia Open API Call (No Key Required)
+            const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+            const response = await fetch(wikiUrl);
+
+            if (response.ok) {
+                const data = await response.json();
+                
+                if (data.extract) {
+                    // Agar Wikipedia par jawab mil gaya
+                    resultBox.innerHTML = `
+                        <h3>Jawab (Via Wikipedia):</h3>
+                        <p style="margin-top: 10px; line-height: 1.6;">${data.extract}</p>
+                        <a href="${data.content_urls.desktop.page}" target="_blank" class="source-btn">Poora Padhein</a>
+                    `;
+                } else {
+                    showGoogleFallback(query, resultBox);
+                }
+            } else {
+                // Agar Wikipedia par exact match nahi mila
+                showGoogleFallback(query, resultBox);
+            }
+        } catch (error) {
+            console.error(error);
+            showGoogleFallback(query, resultBox);
+        } finally {
+            loader.style.display = 'none';
+        }
+    }
+
+    function showGoogleFallback(query, resultBox) {
+        const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        resultBox.innerHTML = `
+            <h3>Hmm... Wikipedia par exact jawab nahi mila.</h3>
+            <p style="margin-top: 10px;">Lekin fikar mat karo! Aap niche diye gaye button par click karke direct Google par iska live jawab dekh sakte hain:</p>
+            <a href="${googleSearchUrl}" target="_blank" class="source-btn" style="background: #4285F4;">Google Par Search Karein</a>
+        `;
+    }
+</script>
+
+</body>
+</html>
