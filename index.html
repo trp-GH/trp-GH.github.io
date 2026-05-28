@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>trp-GH | AI Nexus</title>
+    <!-- Google Fonts & FontAwesome for Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --bg-color: #05050d;
+            --primary-glow: #00f2fe;
+            --secondary-glow: #4facfe;
+            --text-color: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 242, 254, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(79, 172, 254, 0.07) 0%, transparent 40%);
+        }
+
+        /* Animated Background Particles Grid */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            border-bottom: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .nav-links a {
+            color: #a0a0b0;
+            text-decoration: none;
+            margin-left: 30px;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-glow);
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .ai-badge {
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--primary-glow);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-glow);
+            margin-bottom: 25px;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 30%, #a0a0b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 span {
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #a0a0b0;
+            max-width: 600px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .cta-btn {
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            color: #000;
+            padding: 14px 35px;
+            border-radius: 30px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 20px rgba(0, 242, 254, 0.4);
+            transition: 0.3s transform, 0.3s box-shadow;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 242, 254, 0.6);
+        }
+
+        /* Live AI Chat Facility Widget */
+        .ai-chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 350px;
+            height: 450px;
+            background: rgba(10, 10, 25, 0.85);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            transition: 0.3s all;
+        }
+
+        .chat-header {
+            background: linear-gradient(90deg, rgba(0, 242, 254, 0.1), rgba(79, 172, 254, 0.1));
+            padding: 15px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-header .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00ff66;
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 0 8px #00ff66;
+        }
+
+        .chat-header h3 {
+            font-size: 0.9rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .msg {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .msg.ai {
+            background: rgba(255,255,255,0.05);
+            color: #e0e0f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .msg.user {
+            background: linear-gradient(45deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2));
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+        }
+
+        .chat-input-area {
+            padding: 12px;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            padding: 10px 15px;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 0.85rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .chat-input-area input:focus {
+            border-color: var(--primary-glow);
+        }
+
+        .chat-input-area button {
+            background: var(--primary-glow);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: #000;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .chat-input-area button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 242, 254, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1rem; }
+            .ai-chat-widget {
+                width: calc(100% - 40px);
+                right: 20px;
+                bottom: 20px;
+                height: 380px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+
+    <!-- Navbar Section -->
+    <nav>
+        <div class="logo">trp-GH.io</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#network">AI Network</a>
+            <a href="#docs">Core Tech</a>
+        </div>
+    </nav>
+
+    <!-- Main Hero Graphic Section -->
+    <section class="hero" id="home">
+        <div class="ai-badge">AI Systems Active</div>
+        <h1>Welcome to the<br><span>Next-Gen Platform</span></h1>
+        <p>This is my first professional cloud environment, powered by GitHub Pages. Seamlessly automated, beautifully designed, and ready for deployment.</p>
+        <a href="#chat" class="cta-btn" onclick="focusChat()">Initialize Nexus AI</a>
+    </section>
+
+    <!-- Intelligent Live AI Chat Box Widget -->
+    <div class="ai-chat-widget" id="chat">
+        <div class="chat-header">
+            <div class="status-dot"></div>
+            <h3>NEXUS CORE v4.0</h3>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="msg ai">
+                Hello Human! I am Nexus. Welcome to trp-GH's server. Type anything below to simulate a conversation!
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="userInput" placeholder="Ask Nexus anything..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">➔</button>
+        </div>
+    </div>
+
+    <!-- Smart AI Logic JavaScript -->
+    <script>
+        function focusChat() {
+            document.getElementById('userInput').focus();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            const inputField = document.getElementById('userInput');
+            const chatBody = document.getElementById('chatBody');
+            const userText = inputField.value.trim();
+
+            if (userText === "") return;
+
+            // Append User Message
+            const userDiv = document.createElement('div');
+            userDiv.className = 'msg user';
+            userDiv.innerText = userText;
+            chatBody.appendChild(userDiv);
+
+            // Clear Input
+            inputField.value = "";
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // AI Smart Simulated Responses
+            setTimeout(() => {
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'msg ai';
+                aiDiv.innerText = getAIResponse(userText);
+                chatBody.appendChild(aiDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 800);
+        }
+
+        function getAIResponse(query) {
+            const text = query.toLowerCase();
+            if (text.includes('hello') || text.includes('hi')) {
+                return "Greetings! How can I assist you on trp-GH's portal today?";
+            } else if (text.includes('who made') || text.includes('creator')) {
+                return "This system was created and configured by the developer trp-GH.";
+            } else if (text.includes('github')) {
+                return "Yes! This webpage is deployed 100% serverless using GitHub Actions and GitHub Pages.";
+            } else {
+                return "Processing your request... Access granted. This responsive AI logic is fully operational on your server!";
+            }
+        }
+    </script>
+</body>
+</html>
