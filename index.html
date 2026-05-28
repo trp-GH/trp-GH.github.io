@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Intelligent Search Assistant</title>
+    <title>Tusar Ranjan Panda | Official Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-gradient-start: #0f172a;
-            --bg-gradient-end: #1e1b4b;
-            --card-bg: rgba(30, 41, 59, 0.7);
+            --bg-dark: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
             --border-color: rgba(255, 255, 255, 0.08);
-            --accent-primary: #6366f1;
-            --accent-secondary: #4f46e5;
+            --accent-glow: #6366f1;
+            --accent-hover: #4f46e5;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --success-color: #10b981;
@@ -27,172 +26,227 @@
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
-            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            background-color: var(--bg-dark);
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
             color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- WEBSITE CORE LAYOUT --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 8%;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #fff, var(--accent-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--accent-glow);
+        }
+
+        .hero-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 8% 80px 8%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .badge {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent-glow);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            width: fit-content;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .hero-section h1 {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+
+        .highlight-name {
+            background: linear-gradient(to right, #818cf8, #c084fc, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-section p.subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        /* --- FLOATING CHATBOT CONTAINER (BOTTOM RIGHT) --- */
+        .chatbot-launcher {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--accent-glow);
+            border-radius: 50%;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.5);
+            cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            z-index: 100;
+            transition: transform 0.2s, background 0.2s;
+            border: none;
         }
 
-        .app-container {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 24px;
-            padding: 40px;
-            width: 100%;
-            max-width: 650px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
-                        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        .chatbot-launcher:hover {
+            transform: scale(1.05);
+            background: var(--accent-hover);
+        }
+
+        .chatbot-launcher svg {
+            width: 28px;
+            height: 28px;
+            fill: #fff;
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 105px;
+            right: 30px;
+            width: 380px;
+            height: 500px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
+            display: none; /* Dynamic visibility toggle */
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 100;
+            animation: slideIn 0.3s ease-out;
         }
 
-        .header-section {
-            text-align: center;
-            margin-bottom: 35px;
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .header-section h1 {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: linear-gradient(to right, #fff, var(--text-muted));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-        }
-
-        .header-section p {
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 400;
-        }
-
-        .search-wrapper {
-            position: relative;
-            display: flex;
+        .chat-header {
             background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
-            padding: 6px;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            margin-bottom: 25px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .search-wrapper:focus-within {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        .chat-header-info h3 {
+            font-size: 15px;
+            font-weight: 600;
         }
 
-        .search-wrapper input {
-            flex: 1;
+        .chat-header-info span {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: block;
+        }
+
+        .close-chat-btn {
             background: transparent;
             border: none;
-            outline: none;
-            padding: 12px 16px;
-            font-size: 16px;
-            color: #fff;
-        }
-
-        .search-wrapper input::placeholder {
-            color: rgba(255, 255, 255, 0.35);
-        }
-
-        .search-wrapper button {
-            background: var(--accent-primary);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 0 24px;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .search-wrapper button:hover {
-            background: var(--accent-secondary);
-        }
-
-        /* Modern Shimmering Loader Animation */
-        .loader-container {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            margin: 20px 0;
-        }
-
-        .spinner {
-            width: 32px;
-            height: 32px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top-color: var(--accent-primary);
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loader-text {
-            font-size: 14px;
             color: var(--text-muted);
-            font-weight: 500;
+            font-size: 20px;
+            cursor: pointer;
         }
 
-        .display-panel {
-            background: rgba(15, 23, 42, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 25px;
-            min-height: 120px;
-            max-height: 380px;
+        .close-chat-btn:hover {
+            color: #fff;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 20px;
             overflow-y: auto;
-            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .system-welcome {
+            color: var(--text-muted);
+            font-size: 13px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            line-height: 1.4;
         }
 
         .display-panel h3 {
-            font-size: 15px;
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--accent-primary);
-            margin-bottom: 12px;
+            color: var(--accent-glow);
+            margin-bottom: 8px;
             font-weight: 600;
         }
 
         .display-panel p {
-            font-size: 15px;
-            line-height: 1.6;
-            color: rgba(248, 250, 252, 0.85);
-            font-weight: 400;
+            font-size: 13px;
+            line-height: 1.5;
+            color: rgba(248, 250, 252, 0.9);
         }
 
         .action-link {
             display: inline-flex;
             align-items: center;
-            margin-top: 20px;
-            padding: 10px 18px;
+            margin-top: 12px;
+            padding: 8px 14px;
             background: rgba(16, 185, 129, 0.15);
             color: var(--success-color);
             text-decoration: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 12px;
             font-weight: 600;
             border: 1px solid rgba(16, 185, 129, 0.2);
-            transition: background 0.2s, transform 0.2s;
-        }
-
-        .action-link:hover {
-            background: rgba(16, 185, 129, 0.25);
-            transform: translateY(-1px);
         }
 
         .google-btn {
@@ -201,50 +255,142 @@
             border: 1px solid rgba(59, 130, 246, 0.2);
         }
 
-        .google-btn:hover {
-            background: rgba(59, 130, 246, 0.25);
+        /* Input Control Strip */
+        .chat-footer {
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
         }
 
-        /* Custom Scrollbar */
-        .display-panel::-webkit-scrollbar {
-            width: 6px;
-        }
-        .display-panel::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .display-panel::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
+        .chat-footer input {
+            flex: 1;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
+            padding: 10px 14px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .chat-footer input:focus {
+            border-color: var(--accent-glow);
+        }
+
+        .chat-footer button {
+            background: var(--accent-glow);
+            border: none;
+            color: #fff;
+            padding: 0 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .chat-footer button:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Inline Mini Loader */
+        .mini-loader {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .mini-spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent-glow);
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 480px) {
+            .chat-window {
+                width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+                bottom: 95px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="header-section">
-        <h1>AI Knowledge Assistant</h1>
-        <p>Instant answers aggregated globally without API dependencies</p>
-    </div>
-    
-    <div class="search-wrapper">
-        <input type="text" id="userInput" placeholder="Ask anything... (e.g., Quantum Computing)">
-        <button onclick="executeAISearch()">Search</button>
-    </div>
+    <header>
+        <div class="logo">TRP.</div>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="mailto:contact@tusarranjanpanda.com">Contact</a>
+        </nav>
+    </header>
 
-    <div class="loader-container" id="loader">
-        <div class="spinner"></div>
-        <div class="loader-text">Analyzing database and retrieving information...</div>
+    <main id="home">
+        <section class="hero-section">
+            <div class="badge">Official Platform</div>
+            <h1>Welcome to the Digital Space of<br>
+                <span class="highlight-name">Tusar Ranjan Panda</span>
+            </h1>
+            <p class="subtitle">Innovator, Developer, and Tech Enthusiast. Exploring the boundaries of artificial intelligence, modular web architectures, and serverless technology indexes.</p>
+        </section>
+    </main>
+
+    <button class="chatbot-launcher" id="launcherBtn" onclick="toggleChatWindow()">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 2c5.523 0 10 4.477 10 10 0 2.11-.652 4.07-1.767 5.688L21 21l-3.324-.764A9.953 9.953 0 0 1 12 22C6.477 22 2 17.523 2 12S6.477 2 12 2zm0 2a8 8 0 1 0 0 16 7.95 7.95 0 0 0 4.921-1.696l.46-.369 1.954.45-.453-1.932.364-.467A7.952 7.952 0 0 0 20 12a8 8 0 0 0-8-8z"/>
+        </svg>
+    </button>
+
+    <div class="chat-window" id="chatWin">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <h3>TRP Intelligence Node</h3>
+                <span>Powered by Public API Aggregators</span>
+            </div>
+            <button class="close-chat-btn" onclick="toggleChatWindow()">×</button>
+        </div>
+
+        <div class="chat-body" id="chatBody">
+            <div class="system-welcome">
+                Hello! I am Tusar Ranjan Panda's autonomous search engine assistant. Ask me anything, and I'll aggregate answers instantly.
+            </div>
+            <div id="dynamicOutput"></div>
+            
+            <div class="mini-loader" id="miniLoader">
+                <div class="mini-spinner"></div>
+                <span>Scanning global arrays...</span>
+            </div>
+        </div>
+
+        <div class="chat-footer">
+            <input type="text" id="userInput" placeholder="Type a query string...">
+            <button onclick="executeAISearch()">Ask</button>
+        </div>
     </div>
-    
-    <div class="display-panel" id="resultPanel">
-        <p style="color: var(--text-muted); text-align: center; margin-top: 20px;">
-            Your dynamic search feed is empty. Enter a query above to fetch intelligence parameters from public indexes.
-        </p>
-    </div>
-</div>
 
 <script>
-    // Trigger search when 'Enter' key is pressed
+    // Toggle active display state for the floating window
+    function toggleChatWindow() {
+        const chatWin = document.getElementById('chatWin');
+        if (chatWin.style.display === 'flex') {
+            chatWin.style.display = 'none';
+        } else {
+            chatWin.style.display = 'flex';
+            document.getElementById('userInput').focus();
+        }
+    }
+
+    // Monitor input keyboard buffer for native entry sequence
     document.getElementById('userInput').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             executeAISearch();
@@ -253,21 +399,21 @@
 
     async function executeAISearch() {
         const query = document.getElementById('userInput').value.trim();
-        const resultPanel = document.getElementById('resultPanel');
-        const loader = document.getElementById('loader');
+        const output = document.getElementById('dynamicOutput');
+        const loader = document.getElementById('miniLoader');
+        const chatBody = document.getElementById('chatBody');
 
-        if (!query) {
-            alert('Please input a valid search parameters or query.');
-            return;
-        }
+        if (!query) return;
 
-        // Initialize state UI
+        // Clear input element layout instantly
+        document.getElementById('userInput').value = '';
+
+        // Initialize inline UI pending state
         loader.style.display = 'flex';
-        resultPanel.innerHTML = '';
-        resultPanel.style.opacity = '0.5';
+        output.innerHTML = '';
+        chatBody.scrollTop = chatBody.scrollHeight;
 
         try {
-            // Fetch configuration from Wikipedia REST Architecture
             const targetUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
             const response = await fetch(targetUrl);
 
@@ -275,36 +421,40 @@
                 const data = await response.json();
                 
                 if (data.extract) {
-                    resultPanel.innerHTML = `
-                        <h3>Verified Abstract</h3>
-                        <p>${data.extract}</p>
-                        <a href="${data.content_urls.desktop.page}" target="_blank" class="action-link">
-                            Read Full Documentation →
-                        </a>
+                    output.innerHTML = `
+                        <div class="display-panel">
+                            <h3>Verified Intelligence</h3>
+                            <p>${data.extract}</p>
+                            <a href="${data.content_urls.desktop.page}" target="_blank" class="action-link">
+                                Source Directory →
+                            </a>
+                        </div>
                     `;
                 } else {
-                    deployGoogleFallback(query, resultPanel);
+                    deployGoogleFallback(query, output);
                 }
             } else {
-                deployGoogleFallback(query, resultPanel);
+                deployGoogleFallback(query, output);
             }
         } catch (error) {
-            console.error('Data pipeline error:', error);
-            deployGoogleFallback(query, resultPanel);
+            console.error('Data pipeline connectivity drop:', error);
+            deployGoogleFallback(query, output);
         } finally {
             loader.style.display = 'none';
-            resultPanel.style.opacity = '1';
+            chatBody.scrollTop = chatBody.scrollHeight;
         }
     }
 
-    function deployGoogleFallback(query, resultPanel) {
+    function deployGoogleFallback(query, output) {
         const googleTarget = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-        resultPanel.innerHTML = `
-            <h3>No direct matching vector found</h3>
-            <p>The system was unable to extract an exact knowledge matrix from Wikipedia database for this specific query string.</p>
-            <a href="${googleTarget}" target="_blank" class="action-link google-btn">
-                Stream Live Google Engine Results ↗
-            </a>
+        output.innerHTML = `
+            <div class="display-panel">
+                <h3>Index Route Missing</h3>
+                <p>No exact dataset available inside Wikipedia summaries for this query.</p>
+                <a href="${googleTarget}" target="_blank" class="action-link google-btn">
+                    Query Google Live Engine ↗
+                </a>
+            </div>
         `;
     }
 </script>
