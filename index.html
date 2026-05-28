@@ -322,7 +322,7 @@
                 bottom: 95px;
             }
         }
-   </style>
+  </style>
 </head>
 <body>
     <!-- 
@@ -366,39 +366,6 @@
     <!-- End of Front-End Security Script -->
 
     <!-- --- WEBSITE CORE LAYOUT --- -->
-    <header>
-
-    <!-- Start of Front-End Security Script -->
-    <script>
-        // Disable global context menu (Right-Click protection)
-        document.addEventListener('contextmenu', event => event.preventDefault());
-
-        // Intercept and disable developer keyboard shortcut sequences
-        document.onkeydown = function(e) {
-            // Prevent F12 DevTools execution
-            if(e.keyCode == 123) { 
-                return false;
-            }
-            // Prevent Ctrl+Shift+I (Inspect Element shortcut)
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { 
-                return false;
-            }
-            // Prevent Ctrl+Shift+C (Element Selector shortcut)
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { 
-                return false;
-            }
-            // Prevent Ctrl+Shift+J (Console window shortcut)
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { 
-                return false;
-            }
-            // Prevent Ctrl+U (View Source Directory shortcut)
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { 
-                return false;
-            }
-        };
-    </script>
-    <!-- End of Front-End Security Script -->
-
     <header>
         <div class="logo">TRP.</div>
         <nav>
