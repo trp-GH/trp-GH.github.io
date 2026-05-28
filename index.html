@@ -3,18 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free AI Search Assistant</title>
+    <title>AI Intelligent Search Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --bg-gradient-start: #0f172a;
+            --bg-gradient-end: #1e1b4b;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-primary: #6366f1;
+            --accent-secondary: #4f46e5;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success-color: #10b981;
+            --google-blue: #3b82f6;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: #fff;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,155 +39,272 @@
             padding: 20px;
         }
 
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px;
+        .app-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 40px;
             width: 100%;
-            max-width: 600px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 650px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
         }
 
-        h1 {
+        .header-section {
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 24px;
-            letter-spacing: 1px;
+            margin-bottom: 35px;
         }
 
-        .search-box {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+        .header-section h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
         }
 
-        input {
-            flex: 1;
-            padding: 12px 15px;
-            border: none;
-            border-radius: 8px;
-            outline: none;
-            font-size: 16px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-        }
-
-        button {
-            padding: 12px 20px;
-            border: none;
-            background: #ff416c;
-            background: linear-gradient(to right, #ff4b2b, #ff416c);
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            transition: transform 0.2s;
-        }
-
-        button:hover {
-            transform: scale(1.02);
-        }
-
-        .result-box {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 20px;
-            border-radius: 8px;
-            min-height: 150px;
-            max-height: 350px;
-            overflow-y: auto;
-            border-left: 4px solid #ff416c;
-        }
-
-        .loader {
-            display: none;
-            text-align: center;
-            font-style: italic;
-            color: #ffeb3b;
-        }
-
-        .source-btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 8px 15px;
-            background: #4caf50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
+        .header-section p {
+            color: var(--text-muted);
             font-size: 14px;
+            font-weight: 400;
+        }
+
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 6px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 25px;
+        }
+
+        .search-wrapper:focus-within {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        }
+
+        .search-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 12px 16px;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .search-wrapper input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .search-wrapper button {
+            background: var(--accent-primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 0 24px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .search-wrapper button:hover {
+            background: var(--accent-secondary);
+        }
+
+        /* Modern Shimmering Loader Animation */
+        .loader-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent-primary);
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .display-panel {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            min-height: 120px;
+            max-height: 380px;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .display-panel h3 {
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-primary);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .display-panel p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: rgba(248, 250, 252, 0.85);
+            font-weight: 400;
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 20px;
+            padding: 10px 18px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success-color);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .action-link:hover {
+            background: rgba(16, 185, 129, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .google-btn {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--google-blue);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .google-btn:hover {
+            background: rgba(59, 130, 246, 0.25);
+        }
+
+        /* Custom Scrollbar */
+        .display-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .display-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .display-panel::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🤖 Free AI Search Assistant</h1>
+<div class="app-container">
+    <div class="header-section">
+        <h1>AI Knowledge Assistant</h1>
+        <p>Instant answers aggregated globally without API dependencies</p>
+    </div>
     
-    <div class="search-box">
-        <input type="text" id="userInput" placeholder="Kuch bhi sawaal pucho (e.g., Albert Einstein)...">
-        <button onclick="askAI()">Pucho</button>
+    <div class="search-wrapper">
+        <input type="text" id="userInput" placeholder="Ask anything... (e.g., Quantum Computing)">
+        <button onclick="executeAISearch()">Search</button>
     </div>
 
-    <div class="loader" id="loader">AI soch raha hai aur search kar raha hai...</div>
+    <div class="loader-container" id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text">Analyzing database and retrieving information...</div>
+    </div>
     
-    <div class="result-box" id="result">
-        Aapka jawab yahan dikhega. Yeh tool Wikipedia se free data nikalta hai. Agar Wikipedia par nahi mila, toh aapko Google Search ki direct link de dega!
+    <div class="display-panel" id="resultPanel">
+        <p style="color: var(--text-muted); text-align: center; margin-top: 20px;">
+            Your dynamic search feed is empty. Enter a query above to fetch intelligence parameters from public indexes.
+        </p>
     </div>
 </div>
 
 <script>
-    async function askAI() {
+    // Trigger search when 'Enter' key is pressed
+    document.getElementById('userInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            executeAISearch();
+        }
+    });
+
+    async function executeAISearch() {
         const query = document.getElementById('userInput').value.trim();
-        const resultBox = document.getElementById('result');
+        const resultPanel = document.getElementById('resultPanel');
         const loader = document.getElementById('loader');
 
         if (!query) {
-            alert('Pehle kuch likho toh sahi!');
+            alert('Please input a valid search parameters or query.');
             return;
         }
 
-        // Show loader, clear previous result
-        loader.style.display = 'block';
-        resultBox.innerHTML = '';
+        // Initialize state UI
+        loader.style.display = 'flex';
+        resultPanel.innerHTML = '';
+        resultPanel.style.opacity = '0.5';
 
         try {
-            // 1. Wikipedia Open API Call (No Key Required)
-            const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
-            const response = await fetch(wikiUrl);
+            // Fetch configuration from Wikipedia REST Architecture
+            const targetUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+            const response = await fetch(targetUrl);
 
             if (response.ok) {
                 const data = await response.json();
                 
                 if (data.extract) {
-                    // Agar Wikipedia par jawab mil gaya
-                    resultBox.innerHTML = `
-                        <h3>Jawab (Via Wikipedia):</h3>
-                        <p style="margin-top: 10px; line-height: 1.6;">${data.extract}</p>
-                        <a href="${data.content_urls.desktop.page}" target="_blank" class="source-btn">Poora Padhein</a>
+                    resultPanel.innerHTML = `
+                        <h3>Verified Abstract</h3>
+                        <p>${data.extract}</p>
+                        <a href="${data.content_urls.desktop.page}" target="_blank" class="action-link">
+                            Read Full Documentation →
+                        </a>
                     `;
                 } else {
-                    showGoogleFallback(query, resultBox);
+                    deployGoogleFallback(query, resultPanel);
                 }
             } else {
-                // Agar Wikipedia par exact match nahi mila
-                showGoogleFallback(query, resultBox);
+                deployGoogleFallback(query, resultPanel);
             }
         } catch (error) {
-            console.error(error);
-            showGoogleFallback(query, resultBox);
+            console.error('Data pipeline error:', error);
+            deployGoogleFallback(query, resultPanel);
         } finally {
             loader.style.display = 'none';
+            resultPanel.style.opacity = '1';
         }
     }
 
-    function showGoogleFallback(query, resultBox) {
-        const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-        resultBox.innerHTML = `
-            <h3>Hmm... Wikipedia par exact jawab nahi mila.</h3>
-            <p style="margin-top: 10px;">Lekin fikar mat karo! Aap niche diye gaye button par click karke direct Google par iska live jawab dekh sakte hain:</p>
-            <a href="${googleSearchUrl}" target="_blank" class="source-btn" style="background: #4285F4;">Google Par Search Karein</a>
+    function deployGoogleFallback(query, resultPanel) {
+        const googleTarget = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        resultPanel.innerHTML = `
+            <h3>No direct matching vector found</h3>
+            <p>The system was unable to extract an exact knowledge matrix from Wikipedia database for this specific query string.</p>
+            <a href="${googleTarget}" target="_blank" class="action-link google-btn">
+                Stream Live Google Engine Results ↗
+            </a>
         `;
     }
 </script>
